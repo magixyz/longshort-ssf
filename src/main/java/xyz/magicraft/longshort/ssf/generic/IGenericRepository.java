@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.framework.repository;
+package xyz.magicraft.longshort.ssf.generic;
 
 
 import java.util.List;

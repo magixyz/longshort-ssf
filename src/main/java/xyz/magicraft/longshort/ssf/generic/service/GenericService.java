@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.framework.service;
+package xyz.magicraft.longshort.ssf.generic.service;
 
 
 import java.util.ArrayList;
@@ -25,10 +25,10 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
-import xyz.magicraft.longshort.ssf.framework.helper.IGenericHelper;
-import xyz.magicraft.longshort.ssf.framework.model.BaseModel;
-import xyz.magicraft.longshort.ssf.framework.repository.IGenericRepository;
-import xyz.magicraft.longshort.ssf.framework.web.Pagination;
+import xyz.magicraft.longshort.ssf.base.BaseModel;
+import xyz.magicraft.longshort.ssf.base.Pagination;
+import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
+import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
 
 import java.lang.reflect.Field;
 

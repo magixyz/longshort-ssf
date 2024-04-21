@@ -1,8 +1,8 @@
-package xyz.magicraft.longshort.ssf.framework.helper;
+package xyz.magicraft.longshort.ssf.generic.helper;
 
 import java.util.Map;
 
-import xyz.magicraft.longshort.ssf.framework.repository.IGenericRepository;
+import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
 
 
 

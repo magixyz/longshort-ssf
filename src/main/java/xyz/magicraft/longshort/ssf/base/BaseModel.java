@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.framework.model;
+package xyz.magicraft.longshort.ssf.base;
 
 import java.util.Date;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.framework.controller;
+package xyz.magicraft.longshort.ssf.generic.controller;
 
 
 import java.lang.reflect.Field;
@@ -25,9 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.HttpSession;
-import xyz.magicraft.longshort.ssf.framework.helper.IGenericHelper;
-import xyz.magicraft.longshort.ssf.framework.service.GenericService;
-import xyz.magicraft.longshort.ssf.framework.web.Pagination;
+import xyz.magicraft.longshort.ssf.base.Pagination;
+import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
+import xyz.magicraft.longshort.ssf.generic.service.GenericService;
 
 
 

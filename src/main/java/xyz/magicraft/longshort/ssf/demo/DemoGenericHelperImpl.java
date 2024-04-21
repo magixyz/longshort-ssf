@@ -10,8 +10,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.hutool.core.util.StrUtil;
-import xyz.magicraft.longshort.ssf.framework.helper.IGenericHelper;
-import xyz.magicraft.longshort.ssf.framework.repository.IGenericRepository;
+import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
+import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
 
 
 
