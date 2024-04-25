@@ -32,9 +32,9 @@ import xyz.magicraft.longshort.ssf.generic.service.GenericService;
 
 
 @RestController
-public class GenericController {
+public class LsGenericController {
 
-	Logger logger = LoggerFactory.getLogger(GenericController.class);
+	Logger logger = LoggerFactory.getLogger(LsGenericController.class);
 
 
 	@Autowired

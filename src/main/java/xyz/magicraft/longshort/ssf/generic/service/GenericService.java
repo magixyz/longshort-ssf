@@ -198,7 +198,7 @@ public class GenericService {
 	public boolean patchForeign(String page,UUID uuid, String foreign, UUID foreignUuid ) {
 		
 		
-		String sql= String.format("update %s set %s = x'%s' where uuid = x'%s'",page,foreign,foreignUuid.toString().replace("-", ""),uuid.toString().replace("-", "")) ;
+		String sql= String.format("update %s set %s_uuid = x'%s' where uuid = x'%s'",page,foreign,foreignUuid.toString().replace("-", ""),uuid.toString().replace("-", "")) ;
 
         System.out.println("sql: " + sql);
         

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import xyz.magicraft.longshort.ssf.wechat.JsonUtils;
+import xyz.magicraft.longshort.ssf.wechat.model.WechatAccount;
 import xyz.magicraft.longshort.ssf.wechat.service.WechatAccountService;
 
 import java.io.IOException;
@@ -58,38 +59,19 @@ public class WechatAccountController {
      */
     @GetMapping("/login")
     public Map<String,Object> login(@PathVariable String appid, String code,HttpSession session) {
-        if (StringUtils.isBlank(code)) {
-            return Map.of("result","Fail","message","code empty!");
-        }
+    	
+    	WechatAccount wechatAccount = wechatAccountService.loginByCode(appid, code);
+    	
+    	if (wechatAccount != null) {
 
-        System.out.println("login called");
-        System.out.println("session id:");
-        System.out.println(session.getId());
-        
-
-        if (!wxMaService.switchover(appid)) {
-            throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
-        }
-
-        try {
-            WxMaJscode2SessionResult wechatSession = wxMaService.getUserService().getSessionInfo(code);
-            log.info(wechatSession.getSessionKey());
-            log.info(wechatSession.getOpenid());
-            //TODO 可以增加自己的逻辑，关联业务相关数据
-            
-            
-            wechatAccountService.login(wechatSession.getOpenid(), wechatSession.getSessionKey(), wechatSession.getUnionid(),appid);
-            
-            session.setAttribute("openid", wechatSession.getOpenid());
-            
+            session.setAttribute("openid", wechatAccount.getOpenid());
             
             return Map.of("result","OK");
-        } catch (WxErrorException e) {
-            log.error(e.getMessage(), e);
-            return Map.of("result","Fail","message",e.getMessage());
-        } finally {
-            WxMaConfigHolder.remove();//清理ThreadLocal
-        }
+    	}else {
+    		return Map.of("result","Fail");
+    	}
+    	
+    	
     }
 
     /**

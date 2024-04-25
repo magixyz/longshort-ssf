@@ -9,28 +9,28 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import cn.binarywang.wx.miniapp.constant.WxMaApiUrlConstants.User;
 import cn.hutool.core.util.StrUtil;
+import xyz.magicraft.longshort.ssf.generic.GenericHelper;
 import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
 import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
+import xyz.magicraft.longshort.ssf.generic.helper.IGenericInterceptor;
 
 
 
 @Component
-public class DemoGenericHelperImpl implements IGenericHelper{
-	
-	final static List<Class> MODEL_CLASSES = List.of(
-			DemoModel.class
-		);
+public class DemoGenericHelperImpl extends GenericHelper{
 
-
-	
 	@Autowired
 	private DemoRepository demoRepository;
 	
 
-	@Autowired
-	private ObjectMapper objectMapper;
-	
+	@Override
+	public List<Class> listModels (){
+		return List.of(
+				DemoModel.class
+				);
+	}
 	
 
 	@Override
@@ -45,41 +45,11 @@ public class DemoGenericHelperImpl implements IGenericHelper{
 	}
 
 
-	@Override
-	public Object getDataByMsg(Map<String,Object> msg, Class c) {
-		String str;
-		try {
-			str = objectMapper.writeValueAsString(msg);
-			
-
-			Object obj = objectMapper.readValue(str, c);
-			
-			
-			return obj;
-			
-		} catch (JsonProcessingException e) {
-
-			e.printStackTrace();
-			
-			return null;
-		}
-		
-	}
-	
-
 
 	@Override
-	public Class getClass(String page) {
-		
-		for (Class c: MODEL_CLASSES) {
-			if (StrUtil.toUnderlineCase(c.getSimpleName()).equals(page)) {
-				return c;
-			}
-		}
-		
+	public IGenericInterceptor getInterceptor(Class c) {
+		// TODO Auto-generated method stub
 		return null;
-		
-		
 	}
 	
 	
