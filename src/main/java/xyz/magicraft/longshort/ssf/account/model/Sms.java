@@ -18,7 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class Sms extends BaseModel{
 
-	@Column(unique=true)
 	private String mobile;
 	private String content;
 	private String code;

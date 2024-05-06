@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import xyz.magicraft.longshort.ssf.define.helper.DefineRepository;
 
 
-
+@Hidden
 @RestController
 @Slf4j
 @RequestMapping("/ssf/v1")

@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.generic;
+package xyz.magicraft.longshort.ssf.generic.iface;
 
 
 import java.util.List;

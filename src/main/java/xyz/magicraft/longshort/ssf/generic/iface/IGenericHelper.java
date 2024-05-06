@@ -1,9 +1,7 @@
-package xyz.magicraft.longshort.ssf.generic.helper;
+package xyz.magicraft.longshort.ssf.generic.iface;
 
 import java.util.List;
 import java.util.Map;
-
-import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
 
 
 

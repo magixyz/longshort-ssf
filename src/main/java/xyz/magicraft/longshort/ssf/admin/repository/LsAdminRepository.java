@@ -2,7 +2,7 @@ package xyz.magicraft.longshort.ssf.admin.repository;
 
 
 
-import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericRepository;
 
 
 public interface LsAdminRepository<T> extends IGenericRepository<T> {

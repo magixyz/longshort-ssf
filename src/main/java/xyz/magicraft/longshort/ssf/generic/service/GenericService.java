@@ -27,8 +27,10 @@ import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import xyz.magicraft.longshort.ssf.base.BaseModel;
 import xyz.magicraft.longshort.ssf.base.Pagination;
-import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
-import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericHelper;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericRepository;
+
+import cn.hutool.core.util.StrUtil;
 
 import java.lang.reflect.Field;
 
@@ -78,6 +80,22 @@ public class GenericService {
 		return null;
 		
 	}
+	
+	public <T> Object loadByForeign(String page, String foreign, UUID uuid ,Class<T> t) {
+		
+		if (page == null || foreign == null || uuid ==null ) return null;
+		
+//		
+		String sql= String.format("select * from %s where %s = x'%s'",page,foreign,uuid.toString().replace("-", "")) ;
+
+        System.out.println("sql: " + sql);
+        
+        Object obj = entityManager.createNativeQuery(sql,t).getSingleResult();
+//        
+        
+        return obj;
+	}
+	
 	
 	public <T> Iterable<T> listByForeign(String page, String foreign, UUID uuid ,Class<T> t) {
 		
@@ -350,8 +368,9 @@ public class GenericService {
 		   	 	
 		   	 	if (condition != null) {
 			   	 	for(String key : condition.keySet()) {
+			   	 		
 			   	 		Object value = condition.get(key);
-				   	 	Predicate predicate = builder.equal( root.get(key),  value);
+				   	 	Predicate predicate = builder.equal( root.get(StrUtil.toCamelCase(key)),  value);
 				   	 	
 			   	 		predicates.add(predicate);
 				   	}

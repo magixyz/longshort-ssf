@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.generic.helper;
+package xyz.magicraft.longshort.ssf.generic.iface;
 
 import jakarta.servlet.http.HttpSession;
 

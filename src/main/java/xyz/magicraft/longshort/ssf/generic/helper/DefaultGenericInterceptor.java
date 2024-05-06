@@ -1,6 +1,7 @@
 package xyz.magicraft.longshort.ssf.generic.helper;
 
 import jakarta.servlet.http.HttpSession;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericInterceptor;
 
 public class DefaultGenericInterceptor implements IGenericInterceptor {
 

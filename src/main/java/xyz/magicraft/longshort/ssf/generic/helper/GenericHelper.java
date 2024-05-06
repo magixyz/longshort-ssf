@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.generic;
+package xyz.magicraft.longshort.ssf.generic.helper;
 
 import java.util.List;
 import java.util.Map;
@@ -12,9 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.binarywang.wx.miniapp.constant.WxMaApiUrlConstants.User;
 import cn.hutool.core.util.StrUtil;
-import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
-import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
-import xyz.magicraft.longshort.ssf.generic.helper.IGenericInterceptor;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericHelper;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericRepository;
 
 @Component
 public abstract class GenericHelper implements IGenericHelper{

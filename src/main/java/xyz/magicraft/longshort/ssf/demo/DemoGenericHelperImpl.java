@@ -11,10 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.binarywang.wx.miniapp.constant.WxMaApiUrlConstants.User;
 import cn.hutool.core.util.StrUtil;
-import xyz.magicraft.longshort.ssf.generic.GenericHelper;
-import xyz.magicraft.longshort.ssf.generic.IGenericRepository;
-import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
-import xyz.magicraft.longshort.ssf.generic.helper.IGenericInterceptor;
+import xyz.magicraft.longshort.ssf.generic.helper.GenericHelper;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericHelper;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericInterceptor;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericRepository;
 
 
 

@@ -24,13 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.hutool.core.util.StrUtil;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpSession;
 import xyz.magicraft.longshort.ssf.base.Pagination;
-import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericHelper;
 import xyz.magicraft.longshort.ssf.generic.service.GenericService;
 
 
-
+@Hidden
 @RestController
 public class LsGenericController {
 
@@ -101,6 +102,21 @@ public class LsGenericController {
   
 		
 	}
+	@GetMapping("/rest/generic/{page}-by-foreign/{foreign}/{uuid}")
+	public Object loadByForeign(@PathVariable String page,@PathVariable String foreign,@PathVariable UUID uuid, HttpSession session ) throws Exception {
+		
+		logger.debug(String.format("GET %s" ,page));
+		
+		Class c = genericHelper.getClass(page);
+		
+		
+		Object obj = genericService.loadByForeign(page,foreign,uuid,c);
+		
+		return obj;
+  
+		
+	}
+	
 	@GetMapping("/rest/generic/{page}-list-by-foreign/{foreign}/{uuid}")
 	public Iterable listByForeign(@PathVariable String page,@PathVariable String foreign,@PathVariable UUID uuid, HttpSession session ) throws Exception {
 		
@@ -115,6 +131,8 @@ public class LsGenericController {
   
 		
 	}
+
+	
 	@PatchMapping("/rest/generic/{page}/{uuid}/{fieldsstr}")
 	public ResponseEntity<?> patch(@PathVariable String page,@PathVariable UUID uuid,@PathVariable String fieldsstr,@RequestBody Map<String,Object> msg, HttpSession session ) throws Exception {
 		

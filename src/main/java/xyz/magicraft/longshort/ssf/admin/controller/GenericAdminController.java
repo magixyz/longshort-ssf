@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.HttpSession;
 import xyz.magicraft.longshort.ssf.base.Pagination;
-import xyz.magicraft.longshort.ssf.generic.helper.IGenericHelper;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericHelper;
 import xyz.magicraft.longshort.ssf.generic.service.GenericService;
 import xyz.magicraft.longshort.ssf.utils.CsvUtil;
 
