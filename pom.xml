@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>xyz.magicraft.longshort</groupId>
 	<artifactId>longshort-ssf</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 	<name>longshort-ssf</name>
 	<description>Long Short server side framework base on Spring Boot</description>
 	<scm>
@@ -81,6 +81,13 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+		
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-devtools</artifactId>
+		    <optional>true</optional> <!-- 可选 -->
+		</dependency>
 		
 		<dependency>
 		  <groupId>com.github.binarywang</groupId>

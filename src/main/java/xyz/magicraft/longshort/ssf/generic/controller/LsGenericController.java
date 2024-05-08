@@ -86,6 +86,19 @@ public class LsGenericController {
 		return new ResponseEntity(pg,HttpStatus.OK);
 	
 	}
+
+	@PostMapping("/rest/generic/{page}-search-nullable")
+	public ResponseEntity<?> searchNullable(@PathVariable String page,@RequestBody Map<String, Object> condition, HttpSession session ) throws Exception {
+		
+		logger.debug(String.format("POST %s, condition:%s " ,page , new ObjectMapper().writeValueAsString(condition)) );
+
+		Class c = genericHelper.getClass(page);
+		
+		Iterable pg = genericService.searchNullable(condition,c);
+		
+		return new ResponseEntity(pg,HttpStatus.OK);
+	
+	}
 	
 	@GetMapping("/rest/generic/{page}/{uuid}")
 	public ResponseEntity<?> get(@PathVariable String page,@PathVariable UUID uuid, HttpSession session ) throws Exception {

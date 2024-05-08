@@ -5,19 +5,20 @@ import java.util.Map;
 
 
 
+
 public interface IGenericHelper {
 	
 
-	List<Class> listModels ();
+	<T> List<Class<T>> listModels ();
 	
 
-	public Class getClass(String model) ;
-	public IGenericRepository getRepository(Class c);
+	public <T> Class<T> getClass(String model) ;
+	public <T> IGenericRepository<T> getRepository(Class<T> c);
 	
 
 	public IGenericInterceptor getInterceptor(Class c);
 	
-	public Object getDataByMsg(Map<String,Object> msg, Class c);
+	public <T> T getDataByMsg(Map<String,Object> msg, Class<T> c);
 	
 	
 	

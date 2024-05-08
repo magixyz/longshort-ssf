@@ -86,7 +86,7 @@ public class GenericService {
 		if (page == null || foreign == null || uuid ==null ) return null;
 		
 //		
-		String sql= String.format("select * from %s where %s = x'%s'",page,foreign,uuid.toString().replace("-", "")) ;
+		String sql= String.format("select * from %s where %s_uuid = x'%s'",page,foreign,uuid.toString().replace("-", "")) ;
 
         System.out.println("sql: " + sql);
         
@@ -263,9 +263,9 @@ public class GenericService {
 	}
 	
 
-	public Object post(Object data, Class c ) {
+	public <T> Object post(T data, Class<T> c ) {
 
-		IGenericRepository repo = genericHelper.getRepository(c);
+		IGenericRepository<T> repo = genericHelper.getRepository(c);
 		
 		try {
 			
@@ -353,6 +353,46 @@ public class GenericService {
 	
 	
 
+	public <T> Iterable searchNullable( Map<String,Object> condition,Class<T> c) {
+		
+
+		IGenericRepository<T> repository = genericHelper.getRepository(c);
+		
+		
+		Specification<T> spec = new Specification<T>() {
+			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+	
+		   	 	
+		   	 	List<Predicate> predicates = new ArrayList<Predicate>();
+		   	 	
+		   	 	if (condition != null) {
+			   	 	for(String key : condition.keySet()) {
+			   	 		
+			   	 		Object value = condition.get(key);
+				   	 	Predicate predicate1 = builder.isNull(root.get(StrUtil.toCamelCase(key)));
+				   	 	Predicate predicate2 = builder.equal( root.get(StrUtil.toCamelCase(key)),  value);
+				   	 	
+			   	 		predicates.add(builder.or(predicate1,predicate2));
+				   	}
+		   	 	}
+		 	   	 		
+	   	 		
+				
+		   	 	Predicate total = builder.and(predicates.toArray(new Predicate[0]));
+				
+				
+				return total;
+			}	
+		};
+		
+		
+
+	    List items = repository.findAll(spec);
+	    
+		return items;
+	}
+	
+
 
 	public <T> Iterable search( Map<String,Object> condition,Class<T> c) {
 		
@@ -389,11 +429,7 @@ public class GenericService {
 
 	    List items = repository.findAll(spec);
 	    
-	    
-		
-//		 Pagination<Object> pg = new Pagination<Object>(page,size,orderPage.getTotalPages(),orderPage.getContent());
-		 
-		 return items;
+		return items;
 	}
 	
 	
