@@ -1,6 +1,7 @@
 package xyz.magicraft.longshort.ssf.generic2;
 
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import xyz.magicraft.longshort.ssf.base.BaseModel;
 
 
 public class Generic2Service<T> extends Generic2Clazz<T>{
@@ -94,77 +96,47 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 //		
 //	}
 //
-//	public Object patch(UUID uuid, Field [] fields, Object data,Class c) {
-//		
-//		if (uuid == null || data == null ) return null;
-//
-//		IGenericRepository repo = genericHelper.getRepository(c);
-//		
-//		System.out.println(repo.getClass());
-//		
-//		
-//        try {
-//        	
-//        	Optional<Object> optional = repo.findById(uuid);
-//
-//        	System.out.println("patch uuid:" + uuid);
-//        	System.out.println("patch target" + (optional.isEmpty()?"empty":"exist") );
-//        	
-//
-//    		if (optional.isEmpty()) return null;
-//
-//        	System.out.println("patch uuid:" + uuid);
-//    		
-//    		Object item = optional.get();
-//    		
-//    		
-//    		for (Field f : fields) {
-////	    		Field f = c.getDeclaredField( StrUtil.toCamelCase(field) );
-//				f.setAccessible(true);
-//				
-//				if (f.getType().isAssignableFrom(BaseModel.class)) {
-//					
-//					if (f.get(data) == null) {
-//						f.set( item, null);
-//					}else {
-//						IGenericRepository refRepo = genericHelper.getRepository(f.getType());
-//						Optional<Object> refOptional = refRepo.findById( ((BaseModel)f.get(data)).getUuid());
-//						if (refOptional.isPresent()) {
-//							f.set(item,refOptional.get());
-//						}
-//					}
-//					
-//					
-//				}else {
-//					f.set(item , f.get(data));
-//						
-//				}
-//				
-//				System.out.println("field new value:" + f.get(data));
-//				
-//				f.setAccessible(false);
-//    		}
-//			
-//			
-//			return repo.save(item);
-//			
-//			
-//			
-//        } catch (SecurityException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IllegalArgumentException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//        
-//
-//		return null;
-//		
-//	}
+	public T patch(UUID uuid, Field [] fields, T data ) {
+		
+		if (uuid == null || data == null || fields==null || fields.length == 0 ) return null;
+
+		
+		
+        try {
+        	
+        	Optional<T> optional = genericRepository.findById(uuid);
+
+
+    		if (optional.isEmpty()) return null;
+
+    		
+    		T item = optional.get();
+    		
+    		
+    		for (Field f : fields) {
+				f.setAccessible(true);
+				
+				f.set(item , f.get(data));
+				
+				System.out.println("field new value:" + f.get(data));
+				
+				f.setAccessible(false);
+    		}
+			
+			
+			return genericRepository.save(item);
+			
+			
+			
+        } catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+
+		return null;
+		
+	}
 //	
 //	@Transactional
 //    @Modifying
