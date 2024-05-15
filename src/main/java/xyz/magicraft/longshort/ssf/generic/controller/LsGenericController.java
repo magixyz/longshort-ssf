@@ -100,6 +100,20 @@ public class LsGenericController {
 	
 	}
 	
+	@PostMapping("/rest/generic/{page}-search-by-condition")
+	public ResponseEntity<?> searchByCondition(@PathVariable String page,@RequestBody Map<String, Map<String,Object>> condition, HttpSession session ) throws Exception {
+		
+		logger.debug(String.format("POST %s, condition:%s " ,page , new ObjectMapper().writeValueAsString(condition)) );
+
+		Class c = genericHelper.getClass(page);
+		
+		Iterable pg = genericService.searchByCondition(condition,c);
+		
+		return new ResponseEntity(pg,HttpStatus.OK);
+	
+	}
+	
+	
 	@GetMapping("/rest/generic/{page}/{uuid}")
 	public ResponseEntity<?> get(@PathVariable String page,@PathVariable UUID uuid, HttpSession session ) throws Exception {
 		

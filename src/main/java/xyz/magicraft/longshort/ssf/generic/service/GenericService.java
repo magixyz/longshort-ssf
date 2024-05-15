@@ -22,6 +22,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
@@ -392,6 +393,88 @@ public class GenericService {
 		return items;
 	}
 	
+
+	public <T> Iterable searchByCondition( Map<String,Map<String,Object>> condition,Class<T> c) {
+		
+
+		IGenericRepository<T> repository = genericHelper.getRepository(c);
+		
+		
+		Specification<T> spec = new Specification<T>() {
+			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+	
+		   	 	
+		   	 	List<Predicate> predicates = new ArrayList<Predicate>();
+		   	 	
+		   	 	if (condition != null) {
+			   	 	for(String key : condition.keySet()) {
+			   	 		
+			   	 		Map<String,Object> c = condition.get(key);
+			   	 		
+			   	 		Object value = c.get("value");
+			   	 		String expr = (String)c.get("expression");
+			   	 		Boolean strict = (Boolean)c.get("strict");
+			   	 		
+			   	 		Predicate predicate1;
+			   	 		
+			   	 		if (strict != null && strict) {
+			   	 			predicate1 = builder.isNotNull(root.get(StrUtil.toCamelCase(key)));
+			   	 		}else {
+			   	 			predicate1 = builder.isNull(root.get(StrUtil.toCamelCase(key)));
+			   	 		}
+			   	 		
+			   	 		Predicate predicate2;
+			   	 		if ("start_with".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%");
+			   	 			
+			   	 			CriteriaBuilder.In in = builder.in((Expression)root.get(StrUtil.toCamelCase(key)));
+			   	 		    
+			   	 			for (int i=0; i< value.toString().length(); i++) {
+			   	 				in.value(value.toString().substring(0,i+1));
+			   	 			}
+			   	 		    
+			   	 			
+			   	 			predicate2 =  in;
+			   	 			
+//			   	 			builder.length(root.get(StrUtil.toCamelCase(key)));
+//			   	 			
+//			   	 			predicate2 = builder.equal(builder.locate((Expression)value,(Expression)root.get(StrUtil.toCamelCase(key))), 0);
+			   	 			
+			   	 			
+//			   	 			builder.locate((Expression)root.get(StrUtil.toCamelCase(key)),(String)value);
+			   	 			
+//			   	 			predicate2 = builder.like((Expression)root.get(StrUtil.toCamelCase(key)), value + "%" );
+			   	 			
+//			   	 			predicate2 = builder.lessThanOrEqualTo( root.get(StrUtil.toCamelCase(key)), (Comparable)value);
+			   	 		}else {
+			   	 			predicate2 = builder.equal( root.get(StrUtil.toCamelCase(key)),  value);
+			   	 		}
+			   	 		
+				   	 	if (strict != null && strict) {
+				   	 		predicates.add(builder.and(predicate1,predicate2));
+				   	 	}else {
+					   	 	
+				   	 		predicates.add(builder.or(predicate1,predicate2));
+					   	}
+			   	 	}
+		   	 	}
+		 	   	 		
+	   	 		
+				
+		   	 	Predicate total = builder.and(predicates.toArray(new Predicate[0]));
+				
+				
+				return total;
+			}	
+		};
+		
+		
+
+	    List items = repository.findAll(spec);
+	    
+	    return items;
+	}
 
 
 	public <T> Iterable search( Map<String,Object> condition,Class<T> c) {
