@@ -6,11 +6,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import net.sf.jsqlparser.statement.select.Limit;
 import xyz.magicraft.longshort.ssf.base.BaseModel;
+import xyz.magicraft.longshort.ssf.base.Pagination;
 
 
 public class Generic2Service<T> extends Generic2Clazz<T>{
@@ -39,6 +45,11 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 	public Iterable<T> list() {
 
 		return genericRepository.findAll();
+	}
+	
+	public Iterable<T> listLast(Integer limit) {
+
+		return genericRepository.findAll(PageRequest.of(0, limit, Direction.DESC,"createdDate")).toList();
 	}
 	
 
@@ -316,41 +327,16 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 //	}
 //	
 //	
-//	public <T> Pagination<T> search( Map<String,String> filter , int page,int size, Class<T> t) {
-//
-//		IGenericRepository<T> repository = genericHelper.getRepository(t);
-//		
-//		
-//		if (filter.containsKey("_page")) {
-//			page = Integer.valueOf( filter.get("_page"));
-//		}
-//	
-//		if (filter.containsKey("_size")) {
-//			size = Integer.valueOf( filter.get("_size"));
-//		}
-//		 	
-//		Specification<T> spec = new Specification<T>() {
-//			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-//	
-//		   	 	
-//		   	 	List<Predicate> predicates = new ArrayList<Predicate>();
-//		   	 	
-//		   	 	
-//				
-//		   	 	Predicate total = builder.and(predicates.toArray(new Predicate[0]));
-//				
-//				
-//				return total;
-//			}
-//		};	
-//		
-//		Pageable pageable = PageRequest.of(page, size, Direction.DESC,"createdDate");
-//	    Page<T> orderPage = repository.findAll(pageable);
-//	    
-//	    Pagination<T> pg = new Pagination<T>(page,size,orderPage.getTotalPages(),orderPage.getContent());
-//	    
-//	    
-//		return pg;
-//	}
+	public Pagination<T> paginationList( int page,int size) {
+		
+
+		Pageable pageable = PageRequest.of(page, size, Direction.DESC,"createdDate");
+	    Page<T> orderPage = genericRepository.findAll(pageable);
+	    
+	    Pagination<T> pg = new Pagination<T>(page,size,orderPage.getTotalPages(),orderPage.getContent());
+	    
+	    
+		return pg;
+	}
 	
 }

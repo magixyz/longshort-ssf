@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.account.model;
+package xyz.magicraft.longshort.ssf.module.message.model;
 
 
 import java.util.Date;

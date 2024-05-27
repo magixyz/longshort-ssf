@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import xyz.magicraft.longshort.ssf.base.Pagination;
 import xyz.magicraft.longshort.ssf.generic.iface.IGenericHelper;
 import xyz.magicraft.longshort.ssf.generic.service.GenericService;
@@ -33,6 +34,7 @@ import xyz.magicraft.longshort.ssf.generic.service.GenericService;
 
 @Hidden
 @RestController
+@Slf4j
 public class LsGenericController {
 
 	Logger logger = LoggerFactory.getLogger(LsGenericController.class);
@@ -103,7 +105,7 @@ public class LsGenericController {
 	@PostMapping("/rest/generic/{page}-search-by-condition")
 	public ResponseEntity<?> searchByCondition(@PathVariable String page,@RequestBody Map<String, Map<String,Object>> condition, HttpSession session ) throws Exception {
 		
-		logger.debug(String.format("POST %s, condition:%s " ,page , new ObjectMapper().writeValueAsString(condition)) );
+		log.info(String.format("POST %s, condition:%s " ,page , new ObjectMapper().writeValueAsString(condition)) );
 
 		Class c = genericHelper.getClass(page);
 		

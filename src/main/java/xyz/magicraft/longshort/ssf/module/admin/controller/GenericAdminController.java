@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.admin.controller;
+package xyz.magicraft.longshort.ssf.module.admin.controller;
 
 
 import java.util.Map;

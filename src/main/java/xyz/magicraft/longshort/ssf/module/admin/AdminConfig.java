@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.admin;
+package xyz.magicraft.longshort.ssf.module.admin;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.account.iface;
+package xyz.magicraft.longshort.ssf.module.message.iface;
 
 public interface ISmsSender {
 	

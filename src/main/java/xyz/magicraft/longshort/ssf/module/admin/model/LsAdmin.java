@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.admin.model;
+package xyz.magicraft.longshort.ssf.module.admin.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

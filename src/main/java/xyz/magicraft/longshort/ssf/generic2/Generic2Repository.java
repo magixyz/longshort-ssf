@@ -16,6 +16,7 @@ import xyz.magicraft.longshort.ssf.base.BaseModel;
 @NoRepositoryBean
 public interface Generic2Repository<T> extends CrudRepository<T, UUID> {
 
+
 	
 
   Page<T> findAll( Pageable pageable);

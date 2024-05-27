@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.account.model;
+package xyz.magicraft.longshort.ssf.module.message.model;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,10 +12,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import xyz.magicraft.longshort.ssf.base.BaseModel;
 
 
 @Entity 
-public class Email {
+public class Email extends BaseModel{
 	@Id
 	@Column(name = "uuid")
 	private UUID uuid = UUID.randomUUID();

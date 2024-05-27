@@ -1,6 +1,6 @@
 //https://www.geeksforgeeks.org/spring-boot-sending-email-via-smtp/
 
-package xyz.magicraft.longshort.ssf.account.service;
+package xyz.magicraft.longshort.ssf.module.message.service;
 
 
 
@@ -10,13 +10,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-
-import xyz.magicraft.longshort.ssf.account.model.Email;
-import xyz.magicraft.longshort.ssf.account.repository.EmailRepository;
+import xyz.magicraft.longshort.ssf.generic2.Generic2Service;
+import xyz.magicraft.longshort.ssf.module.message.model.Email;
+import xyz.magicraft.longshort.ssf.module.message.repository.EmailRepository;
 
 
 @Service
-public class EmailService{
+public class EmailService extends Generic2Service<Email>{
 
 	@Autowired 
 	private JavaMailSender javaMailSender;

@@ -1,4 +1,4 @@
-package xyz.magicraft.longshort.ssf.admin.repository;
+package xyz.magicraft.longshort.ssf.module.admin.repository;
 
 
 
