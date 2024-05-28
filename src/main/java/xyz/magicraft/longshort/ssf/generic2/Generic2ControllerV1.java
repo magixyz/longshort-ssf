@@ -1,6 +1,7 @@
 package xyz.magicraft.longshort.ssf.generic2;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,13 +31,16 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
 	@Autowired
 	protected Generic2Service<T> genericService;
 	
-	@PostConstruct
-	public void init() {
+	@Override
+	public void setClazz(Class clazz) {
 		
+		System.out.println("set clazz: Controller");
+		
+		super.setClazz(clazz);
 		genericService.setClazz(clazz);
 		
-		
 	}
+	
 
 	
     @GetMapping("")
@@ -102,10 +106,14 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
     }
     
     
-    @Hidden
-    @GetMapping("-by-foreign/{foreign}/{uuid}")
-    public ResponseEntity<T> loadByForeign(@PathVariable String foreign, @PathVariable UUID uuid){
-        return ResponseEntity.ok(genericService.loadByForeign(foreign, uuid));
+    @GetMapping("list-by-foreign/{foreign}/{uuid}")
+    public ResponseEntity<Iterable<T>> listByForeign(@PathVariable String foreign, @PathVariable UUID uuid){
+        return ResponseEntity.ok(genericService.listByForeign(foreign, uuid));
+    }
+    
+    @PostMapping("search-by-foreign/{foreign}")
+    public ResponseEntity<Iterable<T>> searchByForeign(@PathVariable String foreign, @RequestBody T data){
+        return ResponseEntity.ok(genericService.searchByForeign(foreign, data));
     }
     
 	

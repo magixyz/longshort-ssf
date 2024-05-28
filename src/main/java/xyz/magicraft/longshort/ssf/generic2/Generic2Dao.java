@@ -2,6 +2,8 @@ package xyz.magicraft.longshort.ssf.generic2;
 
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManager;
@@ -39,6 +41,28 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
     	TypedQuery<T> q = entityManager.createQuery(query);
     	
     	return q.getSingleResult();
+    	
+    }
+    
+    List<T> listByForeign(String field,Object value) {
+    	
+    	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    	
+    	CriteriaQuery<T> query = cb.createQuery(clazz);
+
+    	System.out.println("clazz: " + clazz.getSimpleName());
+    	
+
+        Root<T> root = query.from(clazz);
+
+        Path<T> p = root.get(field);
+        Predicate predicate = cb.equal(p, value);
+        query.where(predicate);
+    	
+    	
+    	TypedQuery<T> q = entityManager.createQuery(query);
+    	
+    	return q.getResultList();
     	
     }
 }

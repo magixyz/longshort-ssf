@@ -2,6 +2,7 @@ package xyz.magicraft.longshort.ssf.generic2;
 
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,7 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.util.ReflectionUtils;
 
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -33,13 +36,16 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 	@PersistenceContext 
     EntityManager entityManager;
 	
-	@PostConstruct
-	public void init() {
-		
+	
+	@Override
+	public void setClazz(Class clazz){
+		super.setClazz(clazz);
 		genericDao.setClazz(clazz);
 		
-		
+
+		System.out.println("set clazz: Service");
 	}
+	
 
 	
 	public Iterable<T> list() {
@@ -88,6 +94,63 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 		
 		
 	}
+	
+	public Iterable<T> listByForeign(String foreign, UUID uuid){
+		
+		if (foreign == null || uuid ==null ) return null;
+		
+    	Object fObj;
+		try {
+			Field field = ReflectionUtils.findRequiredField(clazz,foreign);
+			Class fClazz = field.getType();
+			fObj = fClazz.getDeclaredConstructor().newInstance();
+			System.out.println("field class:" + fClazz.getSimpleName() + fClazz.getDeclaredFields());
+			
+			Field fUuid = ReflectionUtils.findRequiredField(fClazz ,"uuid");
+			fUuid.setAccessible(true);
+			fUuid.set(fObj, uuid);
+			fUuid.setAccessible(false);
+			
+		} catch (SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return null;
+		}
+		
+		return genericDao.listByForeign(foreign, fObj);
+	}
+	
+	public Iterable<T> searchByForeign(String foreign, T data){
+		
+		if (foreign == null || data ==null ) return null;
+		
+		Object obj;
+		try {
+			Field field = ReflectionUtils.findRequiredField(clazz,StrUtil.toCamelCase(foreign));
+			field.setAccessible(true);
+			obj = field.get(data);
+			field.setAccessible(false);
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+		System.out.println(obj);
+		
+		return genericDao.listByForeign(foreign, obj);
+	}
+	
 //	
 //	
 //	public <T> Iterable<T> listByForeign(String page, String foreign, UUID uuid ,Class<T> t) {

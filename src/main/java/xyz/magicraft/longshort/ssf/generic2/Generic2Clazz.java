@@ -7,6 +7,9 @@ public class Generic2Clazz<T> {
 	
 	public void setClazz(Class<T> clazz) {
 		this.clazz = clazz;
+		
+
+		System.out.println("set clazz: " + clazz.getSimpleName());
 	}
 	
 
