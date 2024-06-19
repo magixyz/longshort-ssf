@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -23,8 +24,35 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
+    public T loadByField(String field,Object value) {
+    	
+    	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    	
+    	CriteriaQuery<T> query = cb.createQuery(clazz);
+
+
+        Root<T> root = query.from(clazz);
+
+        Path<T> p = root.get(field);
+        Predicate predicate = cb.equal(p, value);
+        query.where(predicate);
+    	
+    	
+    	TypedQuery<T> q = entityManager.createQuery(query);
+    	
+    	try {
+			return q.getSingleResult();
+		} catch (NoResultException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return null;
+		}
+    	
+    }
     
-    T loadByForeign(String field,Object value) {
+    
+    public T loadByForeign(String field,Object value) {
     	
     	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     	
@@ -44,7 +72,7 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
     	
     }
     
-    List<T> listByForeign(String field,Object value) {
+    public List<T> listByForeign(String field,Object value) {
     	
     	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     	

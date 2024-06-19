@@ -27,10 +27,10 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 
 	
 	@Autowired
-	Generic2Repository<T> genericRepository; 
+	protected Generic2Repository<T> genericRepository; 
 	
 	@Autowired
-	Generic2Dao<T> genericDao; 
+	protected Generic2Dao<T> genericDao; 
 	
 	
 	@PersistenceContext 
@@ -72,6 +72,17 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 		return item;
 		
 	}
+	
+	public T loadByField(String field,String value ) {
+		
+		if (field == null || value == null ) return null;
+		
+		T item = genericDao.loadByField(field,value);
+		
+		return item;
+		
+	}
+	
 	
 	public T create(T data) {
 

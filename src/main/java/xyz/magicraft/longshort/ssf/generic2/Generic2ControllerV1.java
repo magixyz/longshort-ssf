@@ -64,8 +64,18 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
         return ResponseEntity.ok(genericService.get(uuid));
     }
     
+    @GetMapping("/load-by-field/{field}/{value}")
+    public ResponseEntity<T> loadByField(@PathVariable String field,@PathVariable String value){
+    	T t = genericService.loadByField(field, value);
+    	
+    	if (t == null)  return ResponseEntity.notFound().build();
 
-	@PatchMapping("/{uuid}/{fieldsstr}")
+    	
+        return ResponseEntity.ok(t);
+    }
+    
+
+	@PatchMapping("/{uuid}/{fields}")
 	public ResponseEntity<?> patch(@PathVariable UUID uuid,@PathVariable String fieldsstr,@RequestBody T data, HttpSession session ) throws Exception {
 		
 		String [] fieldstrs = fieldsstr.split(",");
@@ -107,7 +117,7 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
     
     
     @GetMapping("list-by-foreign/{foreign}/{uuid}")
-    public ResponseEntity<Iterable<T>> listByForeign(@PathVariable String foreign, @PathVariable UUID uuid){
+    public ResponseEntity<Iterable<T>> listByForeign(@PathVariable String foreign, @PathVariable UUID uuid,HttpSession session){
         return ResponseEntity.ok(genericService.listByForeign(foreign, uuid));
     }
     

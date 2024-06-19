@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.util.ReflectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -175,7 +176,7 @@ public class LsGenericController {
 		
 		Field[] fields = new Field[fieldstrs.length];
 		for (int i= 0; i< fieldstrs.length; i++ ) {
-			Field f = c.getDeclaredField(StrUtil.toCamelCase(fieldstrs[i]));
+			Field f = ReflectionUtils.findRequiredField( c, StrUtil.toCamelCase(fieldstrs[i]));
 			fields[i] =f;
 		}
 		

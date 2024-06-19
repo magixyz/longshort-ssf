@@ -447,6 +447,29 @@ public class GenericService {
 //			   	 			predicate2 = builder.like((Expression)root.get(StrUtil.toCamelCase(key)), value + "%" );
 			   	 			
 //			   	 			predicate2 = builder.lessThanOrEqualTo( root.get(StrUtil.toCamelCase(key)), (Comparable)value);
+			   	 		}else if ("in".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%");
+			   	 			
+			   	 			CriteriaBuilder.In in = builder.in((Expression)root.get(StrUtil.toCamelCase(key)));
+			   	 		    
+			   	 			for (String r : (Iterable<String>)value) {
+			   	 				in.value(r);
+			   	 			}
+			   	 		    
+			   	 			
+			   	 			predicate2 =  in;
+			   	 			
+//			   	 			builder.length(root.get(StrUtil.toCamelCase(key)));
+//			   	 			
+//			   	 			predicate2 = builder.equal(builder.locate((Expression)value,(Expression)root.get(StrUtil.toCamelCase(key))), 0);
+			   	 			
+			   	 			
+//			   	 			builder.locate((Expression)root.get(StrUtil.toCamelCase(key)),(String)value);
+			   	 			
+//			   	 			predicate2 = builder.like((Expression)root.get(StrUtil.toCamelCase(key)), value + "%" );
+			   	 			
+//			   	 			predicate2 = builder.lessThanOrEqualTo( root.get(StrUtil.toCamelCase(key)), (Comparable)value);
 			   	 		}else {
 			   	 			predicate2 = builder.equal( root.get(StrUtil.toCamelCase(key)),  value);
 			   	 		}

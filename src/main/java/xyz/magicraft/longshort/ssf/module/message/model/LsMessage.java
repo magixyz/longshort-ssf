@@ -3,6 +3,8 @@ package xyz.magicraft.longshort.ssf.module.message.model;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import xyz.magicraft.longshort.ssf.base.BaseModel;
 
@@ -20,6 +22,8 @@ public class LsMessage extends BaseModel{
 	private Date startDate;
 	private Date endDate;
 
+
+	@Enumerated(EnumType.STRING)
 	private Way way;
 	
 

@@ -25,7 +25,7 @@ public class Generic2Controller<T> extends Generic2Clazz<T>{
 	
 	
 	@Autowired
-	Generic2Service<T> genericService;
+	protected Generic2Service<T> genericService;
 	
 	@PostConstruct
 	public void init() {
