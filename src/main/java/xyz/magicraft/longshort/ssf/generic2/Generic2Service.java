@@ -37,14 +37,18 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
     EntityManager entityManager;
 	
 	
-	@Override
-	public void setClazz(Class clazz){
-		super.setClazz(clazz);
-		genericDao.setClazz(clazz);
-		
-
-		System.out.println("set clazz: Service");
-	}
+//	@Override
+//	public void setClazz(Class clazz){
+//		super.setClazz(clazz);
+//		genericDao.setClazz(clazz);
+//		
+//		
+//		
+//
+//		System.out.println("set clazz: Service: " + getClass().getGenericSuperclass());
+//		
+//		
+//	}
 	
 
 	
@@ -112,7 +116,7 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 		
     	Object fObj;
 		try {
-			Field field = ReflectionUtils.findRequiredField(clazz,foreign);
+			Field field = ReflectionUtils.findRequiredField(getClazz(),foreign);
 			Class fClazz = field.getType();
 			fObj = fClazz.getDeclaredConstructor().newInstance();
 			System.out.println("field class:" + fClazz.getSimpleName() + fClazz.getDeclaredFields());
@@ -139,7 +143,7 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 		
 		Object obj;
 		try {
-			Field field = ReflectionUtils.findRequiredField(clazz,StrUtil.toCamelCase(foreign));
+			Field field = ReflectionUtils.findRequiredField(getClazz(),StrUtil.toCamelCase(foreign));
 			field.setAccessible(true);
 			obj = field.get(data);
 			field.setAccessible(false);

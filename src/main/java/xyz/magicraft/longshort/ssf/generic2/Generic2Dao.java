@@ -28,10 +28,10 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
     	
     	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     	
-    	CriteriaQuery<T> query = cb.createQuery(clazz);
+    	CriteriaQuery<T> query = cb.createQuery(getClazz());
 
 
-        Root<T> root = query.from(clazz);
+        Root<T> root = query.from(getClazz());
 
         Path<T> p = root.get(field);
         Predicate predicate = cb.equal(p, value);
@@ -56,10 +56,10 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
     	
     	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     	
-    	CriteriaQuery<T> query = cb.createQuery(clazz);
+    	CriteriaQuery<T> query = cb.createQuery(getClazz());
 
 
-        Root<T> root = query.from(clazz);
+        Root<T> root = query.from(getClazz());
 
         Path<T> p = root.get(field);
         Predicate predicate = cb.equal(p, value);
@@ -76,12 +76,12 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
     	
     	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     	
-    	CriteriaQuery<T> query = cb.createQuery(clazz);
+    	CriteriaQuery<T> query = cb.createQuery(getClazz());
 
-    	System.out.println("clazz: " + clazz.getSimpleName());
+    	System.out.println("clazz: " + getClazz().getSimpleName());
     	
 
-        Root<T> root = query.from(clazz);
+        Root<T> root = query.from(getClazz());
 
         Path<T> p = root.get(field);
         Predicate predicate = cb.equal(p, value);

@@ -91,6 +91,24 @@ public class GenericAdminController {
 	  
 			
 		}
+		
+		@GetMapping("/admin/rest/generic/{page}/{uuid}")
+		public ResponseEntity<?> load(@PathVariable String page,@PathVariable UUID uuid, HttpSession session ) throws Exception {
+			
+			logger.info(String.format("GET %s" ,page));
+			
+
+			Class c = genericHelper.getClass(page);
+			
+
+			Object ret =  genericService.get(uuid,c);
+				
+			
+			
+			return new ResponseEntity(ret,HttpStatus.OK);
+	  
+			
+		}
 	
 //
 //	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")

@@ -31,15 +31,15 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
 	@Autowired
 	protected Generic2Service<T> genericService;
 	
-	@Override
-	public void setClazz(Class clazz) {
-		
-		System.out.println("set clazz: Controller");
-		
-		super.setClazz(clazz);
-		genericService.setClazz(clazz);
-		
-	}
+//	@Override
+//	public void setClazz(Class clazz) {
+//		
+//		System.out.println("set clazz: Controller");
+//		
+//		super.setClazz(clazz);
+//		genericService.setClazz(clazz);
+//		
+//	}
 	
 
 	
@@ -76,22 +76,22 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
     
 
 	@PatchMapping("/{uuid}/{fields}")
-	public ResponseEntity<?> patch(@PathVariable UUID uuid,@PathVariable String fieldsstr,@RequestBody T data, HttpSession session ) throws Exception {
+	public ResponseEntity<?> patch(@PathVariable UUID uuid,@PathVariable String fields,@RequestBody T data, HttpSession session ) throws Exception {
 		
-		String [] fieldstrs = fieldsstr.split(",");
+		String [] fieldstrs = fields.split(",");
 		
-		Field[] fields = new Field[fieldstrs.length];
+		Field[] fs = new Field[fieldstrs.length];
 		for (int i= 0; i< fieldstrs.length; i++ ) {
 			
 			
-			Field f = ReflectionUtils.findRequiredField(clazz, StrUtil.toCamelCase(fieldstrs[i])) ;
+			Field f = ReflectionUtils.findRequiredField(getClazz(), StrUtil.toCamelCase(fieldstrs[i])) ;
 			
-			fields[i] =f;
+			fs[i] =f;
 		}
 		
 		
 		
-		T obj = genericService.patch(uuid,fields,data);
+		T obj = genericService.patch(uuid,fs,data);
 		
 		if (obj == null) return ResponseEntity.notFound().build();
 		

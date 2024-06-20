@@ -27,13 +27,13 @@ public class Generic2Controller<T> extends Generic2Clazz<T>{
 	@Autowired
 	protected Generic2Service<T> genericService;
 	
-	@PostConstruct
-	public void init() {
-		
-		genericService.setClazz(clazz);
-		
-		
-	}
+//	@PostConstruct
+//	public void init() {
+//		
+//		genericService.setClazz(clazz);
+//		
+//		
+//	}
 
     @GetMapping("")
     public ResponseEntity<Iterable<T>> list(){
@@ -72,7 +72,7 @@ public class Generic2Controller<T> extends Generic2Clazz<T>{
 		
 		Field[] fields = new Field[fieldstrs.length];
 		for (int i= 0; i< fieldstrs.length; i++ ) {
-			Field f = clazz.getDeclaredField(StrUtil.toCamelCase(fieldstrs[i]));
+			Field f = getClazz().getDeclaredField(StrUtil.toCamelCase(fieldstrs[i]));
 			fields[i] =f;
 		}
 		

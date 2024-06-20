@@ -11,16 +11,16 @@ import xyz.magicraft.longshort.ssf.generic2.Generic2Controller;
 public class Generic2DemoController extends Generic2Controller<Generic2DemoModel>{
 
 
-	@Override
-	@PostConstruct
-	public void init() {
-		
-		super.init();
-		
-		setClazz(Generic2DemoModel.class);
-		
-	}
-	
+//	@Override
+//	@PostConstruct
+//	public void init() {
+//		
+//		super.init();
+//		
+//		setClazz(Generic2DemoModel.class);
+//		
+//	}
+//	
 	
 
 }
