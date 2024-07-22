@@ -105,7 +105,28 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 		
 		if (foreign == null || uuid ==null ) return null;
 		
-		return genericDao.loadByForeign(foreign, uuid);
+		Object fObj;
+		try {
+			Field field = ReflectionUtils.findRequiredField(getClazz(),StrUtil.toCamelCase(foreign));
+			Class fClazz = field.getType();
+			fObj = fClazz.getDeclaredConstructor().newInstance();
+			System.out.println("field class:" + fClazz.getSimpleName() + fClazz.getDeclaredFields());
+			
+			Field fUuid = ReflectionUtils.findRequiredField(fClazz ,"uuid");
+			fUuid.setAccessible(true);
+			fUuid.set(fObj, uuid);
+			fUuid.setAccessible(false);
+			
+		} catch (SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return null;
+		}
+		
+		
+		return genericDao.loadByForeign(foreign, fObj);
 		
 		
 	}
@@ -116,7 +137,7 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 		
     	Object fObj;
 		try {
-			Field field = ReflectionUtils.findRequiredField(getClazz(),foreign);
+			Field field = ReflectionUtils.findRequiredField(getClazz(),StrUtil.toCamelCase(foreign));
 			Class fClazz = field.getType();
 			fObj = fClazz.getDeclaredConstructor().newInstance();
 			System.out.println("field class:" + fClazz.getSimpleName() + fClazz.getDeclaredFields());

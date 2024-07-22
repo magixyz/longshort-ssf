@@ -55,7 +55,7 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
     }
 
     @PostMapping("")
-    public ResponseEntity<T> create(@RequestBody @Validated T data){
+    public ResponseEntity<T> create(@RequestBody @Validated T data,HttpSession session){
         return ResponseEntity.ok(genericService.create(data));
     }
 
@@ -103,9 +103,9 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
     
 
     @DeleteMapping("/{uuid}")
-    public ResponseEntity<String> delete(@PathVariable UUID uuid){
+    public ResponseEntity<UUID> delete(@PathVariable UUID uuid){
     	genericService.delete(uuid);
-        return ResponseEntity.ok(uuid.toString());
+        return ResponseEntity.ok(uuid);
     }
     
 

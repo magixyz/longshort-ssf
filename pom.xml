@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.10</version>
+		<version>3.1.11</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>xyz.magicraft.longshort</groupId>
 	<artifactId>longshort-ssf</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 	<name>longshort-ssf</name>
 	<description>Long Short server side framework base on Spring Boot</description>
 	<scm>
@@ -20,6 +20,8 @@
     </scm>
 	<properties>
 		<java.version>17</java.version>
+	    <maven.compiler.target>17</maven.compiler.target>
+	    <maven.compiler.source>17</maven.compiler.source>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -55,7 +57,6 @@
 		<dependency>
 		    <groupId>com.fasterxml.jackson.dataformat</groupId>
 		    <artifactId>jackson-dataformat-csv</artifactId>       
-		    <version>2.5.3</version>
 		</dependency>
 		
 		<dependency>
@@ -80,7 +81,7 @@
 	    <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.5.9</version>
+            <version>5.7.10</version>
         </dependency>
         
         <dependency>
@@ -122,6 +123,12 @@
 		  <artifactId>weixin-java-miniapp</artifactId>
 		  <version>4.6.0</version>
 		</dependency>
+		
+		<dependency>
+		  <groupId>com.github.binarywang</groupId>
+		  <artifactId>weixin-java-pay</artifactId>
+		  <version>4.6.0</version>
+		</dependency>
         
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -154,7 +161,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -168,7 +174,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -198,6 +203,7 @@
             </plugin>
             
             
+            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -216,6 +222,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             
             <!--
 			<plugin>

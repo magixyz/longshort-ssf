@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import cn.hutool.core.util.StrUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
@@ -26,6 +27,7 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
 
     public T loadByField(String field,Object value) {
     	
+    	
     	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     	
     	CriteriaQuery<T> query = cb.createQuery(getClazz());
@@ -33,7 +35,7 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
 
         Root<T> root = query.from(getClazz());
 
-        Path<T> p = root.get(field);
+        Path<T> p = root.get(StrUtil.toCamelCase(field));
         Predicate predicate = cb.equal(p, value);
         query.where(predicate);
     	
@@ -73,6 +75,7 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
     }
     
     public List<T> listByForeign(String field,Object value) {
+
     	
     	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     	
@@ -83,7 +86,7 @@ public class Generic2Dao<T> extends Generic2Clazz<T>{
 
         Root<T> root = query.from(getClazz());
 
-        Path<T> p = root.get(field);
+        Path<T> p = root.get(StrUtil.toCamelCase(field));
         Predicate predicate = cb.equal(p, value);
         query.where(predicate);
     	

@@ -39,7 +39,7 @@ public class SsfFileControllerV1 {
     @GetMapping(value = "/{type}/{filename}")
     public ResponseEntity download(@PathVariable String type,@PathVariable  String filename, HttpSession sesion) throws IOException{
     	
-    	File f = new File( new File ( new File( new File(appFilesDir),  type ).getPath() ),filename);
+    	File f = new File(  new File( new File(appFilesDir),  type ),filename);
 
     	String filepath = f.getAbsolutePath();
     	

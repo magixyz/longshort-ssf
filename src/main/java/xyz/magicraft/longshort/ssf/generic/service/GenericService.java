@@ -1,3 +1,6 @@
+//https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/criteria-api-is-member-restriction.html
+//	https://www.cnblogs.com/zjdxr-up/p/17816385.html
+
 package xyz.magicraft.longshort.ssf.generic.service;
 
 
@@ -5,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +27,12 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
+import jakarta.persistence.metamodel.PluralAttribute;
 import jakarta.transaction.Transactional;
 import xyz.magicraft.longshort.ssf.base.BaseModel;
 import xyz.magicraft.longshort.ssf.base.Pagination;
@@ -470,6 +478,46 @@ public class GenericService {
 //			   	 			predicate2 = builder.like((Expression)root.get(StrUtil.toCamelCase(key)), value + "%" );
 			   	 			
 //			   	 			predicate2 = builder.lessThanOrEqualTo( root.get(StrUtil.toCamelCase(key)), (Comparable)value);
+			   	 		}else if ("include".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%" + key);
+			   	 			
+
+			   	 			
+//			   	 			
+//			   	 			CriteriaQuery<T> q = builder.createQuery(tc);
+//			   	 			
+//			   	 			q.select(root).where(builder.isMember(value.toString(), root.<Set<String>>get(StrUtil.toCamelCase(key))));
+//			   	 			
+//			   	 			
+//			   	 			
+//			   	 			
+//			   	 		query
+//				   	      Root<Person> p = query.from(Person.class);
+//				   	      q.select(p)
+//				   	       .where(cb.isMember("joe",
+//				   	                          p.<Set<String>>get("nicknames")));
+//				   	 			
+				   	 			
+			   	 			
+			   	 			return builder.like(root.get(StrUtil.toCamelCase(key)), "%" + value + "%");
+			   	 			
+//			   	 			return builder.isMember(builder.literal(value.toString()), root.<Set<String>>get(StrUtil.toCamelCase(key)));
+			   	 			
+//			   	 			System.out.println(value + "%");
+//			   	 			
+//				   	 		Subquery<Integer> subquery = query.subquery(Integer.class);
+//			                Root<T> correlated = subquery.correlate(root);
+//			                Join<T,String> p = correlated.join(key);
+//			                
+//			                subquery.select(builder.literal(1));
+//			                subquery.where(builder.equal( p ,value));
+//			                
+//			                return builder.exists(subquery);
+//			   	 			
+
+
+			   	 			
 			   	 		}else {
 			   	 			predicate2 = builder.equal( root.get(StrUtil.toCamelCase(key)),  value);
 			   	 		}
