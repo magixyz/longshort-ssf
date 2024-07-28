@@ -52,6 +52,9 @@ public class WxPayUtil {
         WxPayUnifiedOrderV3Request.Amount amount = new WxPayUnifiedOrderV3Request.Amount();
         amount.setTotal(totalFee);
         wxPayUnifiedOrderV3Request.setAmount(amount);
+        
+        System.out.println("pay-order util: " + outTradeNo);
+        
         wxPayUnifiedOrderV3Request.setOutTradeNo(outTradeNo);
         wxPayUnifiedOrderV3Request.setNotifyUrl(wxPayProperties.getReturnUrl());
         wxPayUnifiedOrderV3Request.setPayer(payer);
