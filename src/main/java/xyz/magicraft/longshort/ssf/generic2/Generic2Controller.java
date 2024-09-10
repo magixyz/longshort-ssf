@@ -26,14 +26,7 @@ public class Generic2Controller<T> extends Generic2Clazz<T>{
 	
 	@Autowired
 	protected Generic2Service<T> genericService;
-	
-//	@PostConstruct
-//	public void init() {
-//		
-//		genericService.setClazz(clazz);
-//		
-//		
-//	}
+
 
     @GetMapping("")
     public ResponseEntity<Iterable<T>> list(){

@@ -36,7 +36,7 @@ import xyz.magicraft.longshort.ssf.generic.service.GenericService;
 @Hidden
 @RestController
 @Slf4j
-public class LsGenericController {
+public abstract class LsGenericController {
 
 	Logger logger = LoggerFactory.getLogger(LsGenericController.class);
 
@@ -221,9 +221,6 @@ public class LsGenericController {
 		
 		
 		return genericService.post(  genericHelper.getDataByMsg(msg, c), c);
-		
-
-		
 
 		
 	}

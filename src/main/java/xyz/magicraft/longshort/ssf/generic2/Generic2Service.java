@@ -208,8 +208,8 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 //
 	public T patch(UUID uuid, Field [] fields, T data ) {
 		
+		
 		if (uuid == null || data == null || fields==null || fields.length == 0 ) return null;
-
 		
 		
         try {

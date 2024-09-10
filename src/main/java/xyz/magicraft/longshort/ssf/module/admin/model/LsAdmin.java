@@ -10,6 +10,8 @@ import xyz.magicraft.longshort.ssf.base.BaseModel;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @MappedSuperclass
 public class LsAdmin extends BaseModel{
@@ -22,6 +24,8 @@ public class LsAdmin extends BaseModel{
 	@Column(unique=true)
 	private String email;
 
+
+	@JsonIgnore
 	private String password;
 
 	private String token;
@@ -77,8 +81,8 @@ public class LsAdmin extends BaseModel{
 	@Override
 	 public String toString() {
 	 	return String.format(
-	        "Admin[uuid=%d, mobile='%s', email='%s']",
-	        uuid, email);
+	        "Admin[uuid=%s, email='%s']",
+	        uuid.toString(), email);
 	 }
 
 }

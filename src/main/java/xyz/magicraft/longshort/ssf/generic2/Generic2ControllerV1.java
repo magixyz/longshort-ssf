@@ -22,25 +22,15 @@ import cn.hutool.core.util.StrUtil;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
-import xyz.magicraft.longshort.ssf.base.BaseModel;
+import lombok.extern.slf4j.Slf4j;
 import xyz.magicraft.longshort.ssf.base.Pagination;
+
 
 public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
 	
 	
 	@Autowired
 	protected Generic2Service<T> genericService;
-	
-//	@Override
-//	public void setClazz(Class clazz) {
-//		
-//		System.out.println("set clazz: Controller");
-//		
-//		super.setClazz(clazz);
-//		genericService.setClazz(clazz);
-//		
-//	}
-	
 
 	
     @GetMapping("")
@@ -78,6 +68,7 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
 	@PatchMapping("/{uuid}/{fields}")
 	public ResponseEntity<?> patch(@PathVariable UUID uuid,@PathVariable String fields,@RequestBody T data, HttpSession session ) throws Exception {
 		
+		
 		String [] fieldstrs = fields.split(",");
 		
 		Field[] fs = new Field[fieldstrs.length];
@@ -89,6 +80,7 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
 			fs[i] =f;
 		}
 		
+
 		
 		
 		T obj = genericService.patch(uuid,fs,data);

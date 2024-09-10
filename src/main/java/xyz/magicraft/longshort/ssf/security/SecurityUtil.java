@@ -44,4 +44,12 @@ public class SecurityUtil {
 
 		
 	} 
+	
+	public static void detect(HttpSession session) {
+		SecurityContext sc = SecurityContextHolder.getContext();
+		
+		for (GrantedAuthority ga: sc.getAuthentication().getAuthorities()) {
+			System.out.println("current authority: " + ga.getAuthority());
+		}
+	}
 }
