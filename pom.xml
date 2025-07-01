@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>xyz.magicraft.longshort</groupId>
 	<artifactId>longshort-ssf</artifactId>
-	<version>0.1.4</version>
+	<version>0.2.9</version>
 	<name>longshort-ssf</name>
 	<description>Long Short server side framework base on Spring Boot</description>
 	<scm>

@@ -107,15 +107,31 @@ public class Generic2ControllerV1<T> extends Generic2Clazz<T>{
         return ResponseEntity.ok(genericService.paginationList(_page,_size));
     }
     
+
+    @GetMapping("/pagination/list_by_order")
+    public ResponseEntity<Pagination<T>> paginationListByOrder(@RequestParam(defaultValue = "created_date") String _field,@RequestParam(defaultValue = "0") Integer _page,@RequestParam(defaultValue = "20") Integer _size, HttpSession session){
+        return ResponseEntity.ok(genericService.paginationListOrderBy(_field,_page,_size));
+    }
     
-    @GetMapping("list-by-foreign/{foreign}/{uuid}")
+    @GetMapping("/pagination/pagination_search_by_order")
+    public ResponseEntity<Pagination<T>> paginationSearchByOrder(@RequestParam(defaultValue = "created_date") String _field,@RequestParam(defaultValue = "0") Integer _page,@RequestParam(defaultValue = "20") Integer _size,@RequestBody Map<String, Map<String,Object>> condition, HttpSession session){
+        return ResponseEntity.ok(genericService.paginationSearchByOrder(condition, _field,_page,_size));
+    }
+    
+    
+    @GetMapping("/list-by-foreign/{foreign}/{uuid}")
     public ResponseEntity<Iterable<T>> listByForeign(@PathVariable String foreign, @PathVariable UUID uuid,HttpSession session){
         return ResponseEntity.ok(genericService.listByForeign(foreign, uuid));
     }
     
-    @PostMapping("search-by-foreign/{foreign}")
+    @PostMapping("/search-by-foreign/{foreign}")
     public ResponseEntity<Iterable<T>> searchByForeign(@PathVariable String foreign, @RequestBody T data){
         return ResponseEntity.ok(genericService.searchByForeign(foreign, data));
+    }
+    
+    @PostMapping("/search-by-condition/{page}/{size}")
+    public ResponseEntity<?> searchByCondition(@PathVariable Integer page, @PathVariable Integer size,@RequestBody Map<String, Map<String,Object>> condition,HttpSession session){
+        return ResponseEntity.ok(genericService.searchByCondition(condition, page, size));
     }
     
 	

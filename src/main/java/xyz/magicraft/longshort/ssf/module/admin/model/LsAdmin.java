@@ -25,7 +25,6 @@ public class LsAdmin extends BaseModel{
 	private String email;
 
 
-	@JsonIgnore
 	private String password;
 
 	private String token;

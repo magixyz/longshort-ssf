@@ -224,9 +224,16 @@ public class GenericService {
     @Modifying
 	public boolean patchForeign(String page,UUID uuid, String foreign, UUID foreignUuid ) {
 		
-		
-		String sql= String.format("update %s set %s_uuid = x'%s' where uuid = x'%s'",page,foreign,foreignUuid.toString().replace("-", ""),uuid.toString().replace("-", "")) ;
+		String sql;
 
+		if (foreignUuid == null) {
+			sql = String.format("update %s set %s_uuid = null where uuid = x'%s'",page,foreign,uuid.toString().replace("-", "")) ;
+		}else {
+			sql= String.format("update %s set %s_uuid = x'%s' where uuid = x'%s'",page,foreign,foreignUuid.toString().replace("-", ""),uuid.toString().replace("-", "")) ;
+	
+		}
+		
+		
         System.out.println("sql: " + sql);
         
         int ret =  entityManager.createNativeQuery(sql).executeUpdate();
@@ -500,7 +507,7 @@ public class GenericService {
 //				   	 			
 				   	 			
 			   	 			
-			   	 			return builder.like(root.get(StrUtil.toCamelCase(key)), "%" + value + "%");
+			   	 			predicate2 = builder.like(root.get(StrUtil.toCamelCase(key)), "%" + value + "%");
 			   	 			
 //			   	 			return builder.isMember(builder.literal(value.toString()), root.<Set<String>>get(StrUtil.toCamelCase(key)));
 			   	 			

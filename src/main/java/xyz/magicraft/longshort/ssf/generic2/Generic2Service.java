@@ -3,7 +3,11 @@ package xyz.magicraft.longshort.ssf.generic2;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +15,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.util.ReflectionUtils;
 
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import net.sf.jsqlparser.statement.select.Limit;
 import xyz.magicraft.longshort.ssf.base.BaseModel;
 import xyz.magicraft.longshort.ssf.base.Pagination;
+import xyz.magicraft.longshort.ssf.generic.iface.IGenericRepository;
 
 
 public class Generic2Service<T> extends Generic2Clazz<T>{
@@ -187,25 +198,308 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 		return genericDao.listByForeign(foreign, obj);
 	}
 	
-//	
-//	
-//	public <T> Iterable<T> listByForeign(String page, String foreign, UUID uuid ,Class<T> t) {
-//		
-//		if (uuid == null || page == null || foreign == null ) return null;
-//		
-//		
-//		String sql= String.format("select * from %s where %s = x'%s'",page,foreign,uuid.toString().replace("-", "")) ;
-//
-//        System.out.println("sql: " + sql);
-//        
-//        List list = entityManager.createNativeQuery(sql,t).getResultList();
-//        
-//        
-//        return list;
-//
-//		
-//	}
-//
+
+
+
+	public Pagination<T> paginationSearchByOrder( Map<String,Map<String,Object>> condition,String orderField , int page , int size ) {
+
+		System.out.println( "%%%%%%%%%%%%% condition:" + condition.toString());
+		
+		
+		Specification<T> spec = new Specification<T>() {
+			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+	
+		   	 	
+		   	 	List<Predicate> predicates = new ArrayList<Predicate>();
+		   	 	
+		   	 	if (condition != null) {
+			   	 	for(String key : condition.keySet()) {
+			   	 		
+			   	 		Map<String,Object> c = condition.get(key);
+			   	 		
+			   	 		Object value = c.get("value");
+			   	 		String expr = (String)c.get("expression");
+			   	 		Boolean strict = (Boolean)c.get("strict");
+			   	 		
+//			   	 		Predicate predicate1;
+			   	 		
+//			   	 		if (strict != null && strict) {
+//			   	 			predicate1 = builder.isNotNull(root.get(StrUtil.toCamelCase(key)));
+//			   	 		}else {
+//			   	 			predicate1 = builder.isNull(root.get(StrUtil.toCamelCase(key)));
+//			   	 		}
+			   	 		
+			   	 		System.out.println( "%%%%%%%%%%%%% expr:" + expr);
+			   	 		System.out.println( "%%%%%%%%%%%%% value:" + value);
+			   	 		
+			   	 		Predicate predicate2;
+			   	 		if ("start_with".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%");
+			   	 			
+			   	 			CriteriaBuilder.In in = builder.in((Expression)root.get(StrUtil.toCamelCase(key)));
+			   	 		    
+			   	 			for (int i=0; i< value.toString().length(); i++) {
+			   	 				in.value(value.toString().substring(0,i+1));
+			   	 			}
+			   	 		    
+			   	 			
+			   	 			predicate2 =  in;
+			   	 			
+//			   	 			builder.length(root.get(StrUtil.toCamelCase(key)));
+//			   	 			
+//			   	 			predicate2 = builder.equal(builder.locate((Expression)value,(Expression)root.get(StrUtil.toCamelCase(key))), 0);
+			   	 			
+			   	 			
+//			   	 			builder.locate((Expression)root.get(StrUtil.toCamelCase(key)),(String)value);
+			   	 			
+//			   	 			predicate2 = builder.like((Expression)root.get(StrUtil.toCamelCase(key)), value + "%" );
+			   	 			
+//			   	 			predicate2 = builder.lessThanOrEqualTo( root.get(StrUtil.toCamelCase(key)), (Comparable)value);
+			   	 		}else if ("in".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%");
+			   	 			
+			   	 			CriteriaBuilder.In in = builder.in((Expression)root.get(StrUtil.toCamelCase(key)));
+			   	 		    
+			   	 			for (String r : (Iterable<String>)value) {
+			   	 				in.value(r);
+			   	 			}
+			   	 		    
+			   	 			
+			   	 			predicate2 =  in;
+			   	 			
+			   	 		}else if ("include".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%%%%%%%%%%%%%" + key);
+			   	 			
+
+			   	 			
+			   	 			return builder.like(root.get(StrUtil.toCamelCase(key)), "%" + value + "%");
+
+			   	 			
+			   	 		}else if("foreign".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			predicate2 = builder.equal( root.get(StrUtil.toCamelCase(key)), foreignObject(key, UUID.fromString((String)value)));
+			   	 		}else if("null".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			boolean b = (boolean)value;
+			   	 			
+			   	 			if (b) {
+			   	 				predicate2 = builder.isNull(root.get(StrUtil.toCamelCase(key)));	
+			   	 			}else {
+			   	 				
+			   	 				System.out.println("b: " + key);
+			   	 				
+			   	 				predicate2 = builder.isNotNull(root.get(StrUtil.toCamelCase(key)));	
+			   	 			}
+			   	 			
+			   	 			
+			   	 		} else {
+			   	 			predicate2 = builder.equal( root.get(StrUtil.toCamelCase(key)),  value);
+			   	 		}
+			   	 		
+			   	 		
+			   	 		predicates.add(predicate2);
+			   	 		
+//				   	 	if (strict != null && strict) {
+//				   	 		predicates.add(builder.and(predicate1,predicate2));
+//				   	 	}else {
+//					   	 	
+//				   	 		predicates.add(builder.or(predicate1,predicate2));
+//					   	}
+			   	 	}
+		   	 	}
+		 	   	 		
+	   	 		
+				
+		   	 	Predicate total = builder.and(predicates.toArray(new Predicate[0]));
+				
+				
+				return total;
+			}	
+		};
+		
+
+		Pageable pageable = PageRequest.of(page, size, Direction.DESC,StrUtil.toCamelCase(orderField),"uuid");
+		
+
+		Page<T> p =  this.genericRepository.findAll(spec, pageable);
+		
+	    Pagination<T> pg = new Pagination<T>(page,size,p.getTotalPages(),p.getContent());
+	    
+		
+		return pg;
+	    
+	}
+	
+
+
+	public Page<T> searchByCondition( Map<String,Map<String,Object>> condition , int page , int size ) {
+		
+		
+		
+		Specification<T> spec = new Specification<T>() {
+			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+	
+		   	 	
+		   	 	List<Predicate> predicates = new ArrayList<Predicate>();
+		   	 	
+		   	 	if (condition != null) {
+			   	 	for(String key : condition.keySet()) {
+			   	 		
+			   	 		Map<String,Object> c = condition.get(key);
+			   	 		
+			   	 		Object value = c.get("value");
+			   	 		String expr = (String)c.get("expression");
+			   	 		Boolean strict = (Boolean)c.get("strict");
+			   	 		
+//			   	 		Predicate predicate1;
+			   	 		
+//			   	 		if (strict != null && strict) {
+//			   	 			predicate1 = builder.isNotNull(root.get(StrUtil.toCamelCase(key)));
+//			   	 		}else {
+//			   	 			predicate1 = builder.isNull(root.get(StrUtil.toCamelCase(key)));
+//			   	 		}
+			   	 		
+			   	 		Predicate predicate2;
+			   	 		if ("start_with".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%");
+			   	 			
+			   	 			CriteriaBuilder.In in = builder.in((Expression)root.get(StrUtil.toCamelCase(key)));
+			   	 		    
+			   	 			for (int i=0; i< value.toString().length(); i++) {
+			   	 				in.value(value.toString().substring(0,i+1));
+			   	 			}
+			   	 		    
+			   	 			
+			   	 			predicate2 =  in;
+			   	 			
+//			   	 			builder.length(root.get(StrUtil.toCamelCase(key)));
+//			   	 			
+//			   	 			predicate2 = builder.equal(builder.locate((Expression)value,(Expression)root.get(StrUtil.toCamelCase(key))), 0);
+			   	 			
+			   	 			
+//			   	 			builder.locate((Expression)root.get(StrUtil.toCamelCase(key)),(String)value);
+			   	 			
+//			   	 			predicate2 = builder.like((Expression)root.get(StrUtil.toCamelCase(key)), value + "%" );
+			   	 			
+//			   	 			predicate2 = builder.lessThanOrEqualTo( root.get(StrUtil.toCamelCase(key)), (Comparable)value);
+			   	 		}else if ("in".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%");
+			   	 			
+			   	 			CriteriaBuilder.In in = builder.in((Expression)root.get(StrUtil.toCamelCase(key)));
+			   	 		    
+			   	 			for (String r : (Iterable<String>)value) {
+			   	 				in.value(r);
+			   	 			}
+			   	 		    
+			   	 			
+			   	 			predicate2 =  in;
+			   	 			
+//			   	 			builder.length(root.get(StrUtil.toCamelCase(key)));
+//			   	 			
+//			   	 			predicate2 = builder.equal(builder.locate((Expression)value,(Expression)root.get(StrUtil.toCamelCase(key))), 0);
+			   	 			
+			   	 			
+//			   	 			builder.locate((Expression)root.get(StrUtil.toCamelCase(key)),(String)value);
+			   	 			
+//			   	 			predicate2 = builder.like((Expression)root.get(StrUtil.toCamelCase(key)), value + "%" );
+			   	 			
+//			   	 			predicate2 = builder.lessThanOrEqualTo( root.get(StrUtil.toCamelCase(key)), (Comparable)value);
+			   	 		}else if ("include".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			System.out.println(value + "%" + key);
+			   	 			
+
+			   	 			
+//			   	 			
+//			   	 			CriteriaQuery<T> q = builder.createQuery(tc);
+//			   	 			
+//			   	 			q.select(root).where(builder.isMember(value.toString(), root.<Set<String>>get(StrUtil.toCamelCase(key))));
+//			   	 			
+//			   	 			
+//			   	 			
+//			   	 			
+//			   	 		query
+//				   	      Root<Person> p = query.from(Person.class);
+//				   	      q.select(p)
+//				   	       .where(cb.isMember("joe",
+//				   	                          p.<Set<String>>get("nicknames")));
+//				   	 			
+				   	 			
+			   	 			
+			   	 			return builder.like(root.get(StrUtil.toCamelCase(key)), "%" + value + "%");
+			   	 			
+//			   	 			return builder.isMember(builder.literal(value.toString()), root.<Set<String>>get(StrUtil.toCamelCase(key)));
+			   	 			
+//			   	 			System.out.println(value + "%");
+//			   	 			
+//				   	 		Subquery<Integer> subquery = query.subquery(Integer.class);
+//			                Root<T> correlated = subquery.correlate(root);
+//			                Join<T,String> p = correlated.join(key);
+//			                
+//			                subquery.select(builder.literal(1));
+//			                subquery.where(builder.equal( p ,value));
+//			                
+//			                return builder.exists(subquery);
+//			   	 			
+
+
+			   	 			
+			   	 		}else if("foreign".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			predicate2 = builder.equal( root.get(StrUtil.toCamelCase(key)), foreignObject(key, UUID.fromString((String)value)));
+			   	 		}else if("null".equalsIgnoreCase(expr)) {
+			   	 			
+			   	 			boolean b = (boolean)value;
+			   	 			
+			   	 			if (b) {
+			   	 				predicate2 = builder.isNull(root.get(StrUtil.toCamelCase(key)));	
+			   	 			}else {
+			   	 				
+			   	 				System.out.println("b: " + key);
+			   	 				
+			   	 				predicate2 = builder.isNotNull(root.get(StrUtil.toCamelCase(key)));	
+			   	 			}
+			   	 			
+			   	 			
+			   	 		} else {
+			   	 			predicate2 = builder.equal( root.get(StrUtil.toCamelCase(key)),  value);
+			   	 		}
+			   	 		
+			   	 		
+			   	 		predicates.add(predicate2);
+			   	 		
+//				   	 	if (strict != null && strict) {
+//				   	 		predicates.add(builder.and(predicate1,predicate2));
+//				   	 	}else {
+//					   	 	
+//				   	 		predicates.add(builder.or(predicate1,predicate2));
+//					   	}
+			   	 	}
+		   	 	}
+		 	   	 		
+	   	 		
+				
+		   	 	Predicate total = builder.and(predicates.toArray(new Predicate[0]));
+				
+				
+				return total;
+			}	
+		};
+		
+
+		Pageable pageable = PageRequest.of(page, size, Direction.DESC,"createdDate");
+		
+		
+		return this.genericRepository.findAll(spec, pageable);
+	    
+	}
+	
+
 	public T patch(UUID uuid, Field [] fields, T data ) {
 		
 		
@@ -436,6 +730,49 @@ public class Generic2Service<T> extends Generic2Clazz<T>{
 	    
 	    
 		return pg;
+	}
+	
+	public Pagination<T> paginationListOrderBy(String field, int page,int size) {
+		
+
+		Pageable pageable = PageRequest.of(page, size, Direction.DESC,StrUtil.toCamelCase(field),"uuid");
+	    Page<T> orderPage = genericRepository.findAll(pageable);
+	    
+	    Pagination<T> pg = new Pagination<T>(page,size,orderPage.getTotalPages(),orderPage.getContent());
+	    
+	    
+		return pg;
+	}
+	
+	
+	private Object foreignObject(String foreign, UUID uuid) {
+		
+		if (foreign == null || uuid ==null ) return null;
+		
+		Object fObj;
+		try {
+			Field field = ReflectionUtils.findRequiredField(getClazz(),StrUtil.toCamelCase(foreign));
+			Class fClazz = field.getType();
+			fObj = fClazz.getDeclaredConstructor().newInstance();
+			System.out.println("field class:" + fClazz.getSimpleName() + fClazz.getDeclaredFields());
+			
+			Field fUuid = ReflectionUtils.findRequiredField(fClazz ,"uuid");
+			fUuid.setAccessible(true);
+			fUuid.set(fObj, uuid);
+			fUuid.setAccessible(false);
+			
+		} catch (SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return null;
+		}
+		
+		
+		return fObj;
+		
+		
 	}
 	
 }

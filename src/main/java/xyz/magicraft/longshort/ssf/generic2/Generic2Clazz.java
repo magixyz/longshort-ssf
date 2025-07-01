@@ -32,9 +32,14 @@ public class Generic2Clazz<T> {
 		
 		while(! (c.getGenericSuperclass() instanceof ParameterizedType)) c = c.getSuperclass();
 		
+
+		System.out.println("c: " + c);
+		
 		ParameterizedType pt = (ParameterizedType)c.getGenericSuperclass();
 		
 		Type t = pt.getActualTypeArguments()[0];
+		
+		System.out.println("t: " + t);
 		
 		if (t instanceof Class) {
 			return (Class<T>)t;
